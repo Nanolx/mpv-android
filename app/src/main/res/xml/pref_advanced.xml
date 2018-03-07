@@ -3,5 +3,5 @@
     <is.xyz.mpv.VersionInfoDialog
         android:key=""
         android:title="@string/pref_advanced_version"
-        android:negativeButtonText="" />
+        android:negativeButtonText="@null" />
 </PreferenceScreen>
