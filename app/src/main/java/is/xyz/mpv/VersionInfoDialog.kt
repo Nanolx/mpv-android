@@ -13,31 +13,41 @@ class VersionInfoDialog @JvmOverloads constructor(
     defStyleAttr: Int = android.R.attr.dialogPreferenceStyle,
     defStyleRes: Int = 0
 ): DialogPreference(context, attrs, defStyleAttr, defStyleRes), LogObserver {
-    private var versionText: String
-
     init {
         isPersistent = false
         dialogLayoutResource = R.layout.version_dialog
-
-        versionText = "mpv-android ${BuildConfig.VERSION_NAME} / ${BuildConfig.VERSION_CODE} (${BuildConfig.BUILD_TYPE})\n"
-        /* create mpv context to capture versions from log */
-        MPVLib.create(context)
-        MPVLib.init()
-        MPVLib.addLogObserver(this)
     }
+
+    private lateinit var myView: View
+    private lateinit var versionText: String
 
     override fun onBindDialogView(view: View) {
         super.onBindDialogView(view)
+        myView = view
 
-        MPVLib.removeLogObserver(this)
+        versionText = "mpv-android ${BuildConfig.VERSION_NAME} / ${BuildConfig.VERSION_CODE} (${BuildConfig.BUILD_TYPE})\n"
+        /* create mpv context to capture version info from log */
+        MPVLib.create(context)
+        MPVLib.addLogObserver(this)
+        MPVLib.init()
+    }
+
+    override fun onDialogClosed(positiveResult: Boolean) {
+        super.onDialogClosed(positiveResult)
         MPVLib.destroy()
-        val field = view.findViewById<TextView>(R.id.info)
-        field.text = versionText
-        field.movementMethod = ScrollingMovementMethod()
     }
 
     override fun logMessage(prefix: String, level: Int, text: String) {
-        if (prefix == "cplayer" && level == MPVLib.mpvLogLevel.MPV_LOG_LEVEL_V)
+        if (prefix != "cplayer")
+            return
+        if (level == MPVLib.mpvLogLevel.MPV_LOG_LEVEL_V)
             versionText += text
+        if (text.startsWith("List of enabled features:")) {
+            /* stop receiving log messages and populate text field */
+            MPVLib.removeLogObserver(this)
+            val field = myView.findViewById<TextView>(R.id.info)
+            field.text = versionText
+            field.movementMethod = ScrollingMovementMethod()
+        }
     }
 }
