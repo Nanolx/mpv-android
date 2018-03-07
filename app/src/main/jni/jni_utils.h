@@ -13,4 +13,4 @@ extern jmethodID java_Integer_init, java_Integer_intValue, java_Boolean_init, ja
 extern jmethodID java_GLSurfaceView_requestRender;
 
 extern jclass mpv_MPVLib;
-extern jmethodID mpv_MPVLib_eventProperty_S, mpv_MPVLib_eventProperty_Sb, mpv_MPVLib_eventProperty_Sl, mpv_MPVLib_eventProperty_SS, mpv_MPVLib_event;
+extern jmethodID mpv_MPVLib_eventProperty_S, mpv_MPVLib_eventProperty_Sb, mpv_MPVLib_eventProperty_Sl, mpv_MPVLib_eventProperty_SS, mpv_MPVLib_event, mpv_MPVLib_logMessage_SiS;
