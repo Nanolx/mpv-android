@@ -27,9 +27,12 @@ class MpvConfEditDialog @JvmOverloads constructor(
         view.findViewById<Button>(R.id.button_cancel).setOnClickListener {
             this.dialog.cancel()
         }
-        view.findViewById<Button>(R.id.button_ok).setOnClickListener {
+        view.findViewById<Button>(R.id.button_save).setOnClickListener {
             val content = view.findViewById<EditText>(R.id.editText).text.toString()
-            configFile.writeText(content)
+            if (content == "")
+                configFile.delete()
+            else
+                configFile.writeText(content)
             this.dialog.dismiss()
         }
 
