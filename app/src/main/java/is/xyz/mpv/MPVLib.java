@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.opengl.GLSurfaceView;
 import android.view.Surface;
 
 public class MPVLib {
@@ -23,6 +22,7 @@ public class MPVLib {
      public static native void destroy();
      public static native void attachSurface(Surface surface);
      public static native void detachSurface();
+     public static native void attachSurfaceTextureListenerClass(Class<NativeOnFrameAvailableListener> java);
 
      public static native void command(String[] cmd);
 
